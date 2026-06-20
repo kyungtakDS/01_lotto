@@ -11,13 +11,52 @@
       padding: 0;
     }
 
+    :root {
+      --text-color: #172033;
+      --sub-text-color: #59677c;
+      --muted-color: #6b7280;
+      --bg-glow: rgba(255, 215, 87, 0.38);
+      --bg-grad-start: #f7f9fc;
+      --bg-grad-end: #eaf0f8;
+      --button-bg: #ffd447;
+      --button-bg-hover: #ffc928;
+      --button-text: #111827;
+      --card-bg: rgba(255, 255, 255, 0.86);
+      --card-border: rgba(120, 135, 160, 0.22);
+      --card-shadow: rgba(28, 42, 70, 0.08);
+      --game-title-color: #2f3c52;
+      --empty-border: #aeb8c8;
+      --empty-bg: rgba(255, 255, 255, 0.58);
+      --empty-text: #68758a;
+    }
+
+    html[data-theme="dark"] {
+      --text-color: #e8edf7;
+      --sub-text-color: #aab4c6;
+      --muted-color: #9aa4b8;
+      --bg-glow: rgba(255, 215, 87, 0.14);
+      --bg-grad-start: #161b27;
+      --bg-grad-end: #0c1018;
+      --button-bg: #ffd447;
+      --button-bg-hover: #ffc928;
+      --button-text: #111827;
+      --card-bg: rgba(255, 255, 255, 0.06);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --card-shadow: rgba(0, 0, 0, 0.35);
+      --game-title-color: #e8edf7;
+      --empty-border: rgba(255, 255, 255, 0.25);
+      --empty-bg: rgba(255, 255, 255, 0.04);
+      --empty-text: #9aa4b8;
+    }
+
     body {
       min-height: 100vh;
       font-family: Arial, "Noto Sans KR", sans-serif;
-      color: #172033;
+      color: var(--text-color);
       background:
-        radial-gradient(circle at top left, rgba(255, 215, 87, 0.38), transparent 28rem),
-        linear-gradient(135deg, #f7f9fc 0%, #eaf0f8 100%);
+        radial-gradient(circle at top left, var(--bg-glow), transparent 28rem),
+        linear-gradient(135deg, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
     main {
@@ -40,7 +79,7 @@
 
     .sub-text {
       max-width: 620px;
-      color: #59677c;
+      color: var(--sub-text-color);
       font-size: 1.05rem;
       line-height: 1.7;
     }
@@ -60,15 +99,15 @@
       padding: 0 20px;
       font-size: 1rem;
       font-weight: 700;
-      color: #111827;
-      background: #ffd447;
+      color: var(--button-text);
+      background: var(--button-bg);
       cursor: pointer;
       box-shadow: 0 8px 18px rgba(182, 129, 0, 0.18);
       transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
     }
 
     button:hover {
-      background: #ffc928;
+      background: var(--button-bg-hover);
       transform: translateY(-1px);
       box-shadow: 0 12px 24px rgba(182, 129, 0, 0.22);
     }
@@ -77,8 +116,20 @@
       transform: translateY(0);
     }
 
+    .theme-toggle {
+      background: transparent;
+      color: var(--text-color);
+      border: 1px solid var(--card-border);
+      box-shadow: none;
+    }
+
+    .theme-toggle:hover {
+      background: var(--card-bg);
+      box-shadow: none;
+    }
+
     .muted {
-      color: #6b7280;
+      color: var(--muted-color);
       font-size: 0.95rem;
     }
 
@@ -94,15 +145,16 @@
       gap: 18px;
       align-items: center;
       min-height: 98px;
-      border: 1px solid rgba(120, 135, 160, 0.22);
+      border: 1px solid var(--card-border);
       border-radius: 8px;
       padding: 18px;
-      background: rgba(255, 255, 255, 0.86);
-      box-shadow: 0 10px 28px rgba(28, 42, 70, 0.08);
+      background: var(--card-bg);
+      box-shadow: 0 10px 28px var(--card-shadow);
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     .game-title {
-      color: #2f3c52;
+      color: var(--game-title-color);
       font-weight: 800;
     }
 
@@ -161,17 +213,17 @@
     }
 
     .bonus-label {
-      color: #6b7280;
+      color: var(--muted-color);
       font-size: 0.85rem;
       font-weight: 700;
     }
 
     .empty-state {
-      border: 1px dashed #aeb8c8;
+      border: 1px dashed var(--empty-border);
       border-radius: 8px;
       padding: 36px 20px;
-      color: #68758a;
-      background: rgba(255, 255, 255, 0.58);
+      color: var(--empty-text);
+      background: var(--empty-bg);
       text-align: center;
     }
 
@@ -199,14 +251,15 @@
       <h1>로또번호 추첨기</h1>
       <p class="sub-text">
         버튼을 누르면 1부터 45까지의 숫자 중 중복 없이 6개 번호를 뽑습니다.
-        한 번에 5게임까지 추천하고, 각 게임마다 보너스 번호도 함께 표시합니다.
+        한 번에 2게임을 추천하고, 각 게임마다 보너스 번호도 함께 표시합니다.
       </p>
     </header>
 
     <section aria-labelledby="draw-title">
       <h2 id="draw-title" class="muted">추천 번호</h2>
       <div class="control-bar">
-        <button type="button" id="drawButton">5게임 추천받기</button>
+        <button type="button" id="drawButton">2게임 추천받기</button>
+        <button type="button" id="themeToggle" class="theme-toggle">🌙 다크모드</button>
         <span class="muted" id="drawTime">아직 추첨 전입니다.</span>
       </div>
 
@@ -220,6 +273,23 @@
     const drawButton = document.querySelector("#drawButton");
     const drawTime = document.querySelector("#drawTime");
     const resultList = document.querySelector("#resultList");
+    const themeToggle = document.querySelector("#themeToggle");
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      themeToggle.textContent = theme === "dark" ? "☀️ 라이트모드" : "🌙 다크모드";
+      localStorage.setItem("lotto-theme", theme);
+    }
+
+    const savedTheme =
+      localStorage.getItem("lotto-theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    applyTheme(savedTheme);
+
+    themeToggle.addEventListener("click", () => {
+      const nextTheme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      applyTheme(nextTheme);
+    });
 
     function getBallClass(number) {
       if (number <= 10) return "ball-yellow";
@@ -253,7 +323,7 @@
     }
 
     function renderGames() {
-      const games = Array.from({ length: 5 }, drawOneGame);
+      const games = Array.from({ length: 2 }, drawOneGame);
       const fragment = document.createDocumentFragment();
 
       games.forEach((game, index) => {
