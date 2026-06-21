@@ -205,7 +205,8 @@
     }
 
     #orderForm input[type="text"],
-    #orderForm input[type="number"] {
+    #orderForm input[type="number"],
+    #orderForm input[type="date"] {
       min-height: 44px;
       border: 1px solid var(--card-border);
       border-radius: 6px;
@@ -217,6 +218,28 @@
 
     #orderForm input[readonly] {
       color: var(--muted-color);
+    }
+
+    .order-fieldset {
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      gap: 18px;
+    }
+
+    .order-fieldset legend {
+      font-size: 0.85rem;
+      color: var(--muted-color);
+      padding: 0 4px;
+    }
+
+    .order-fieldset label {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.95rem;
     }
 
     #orderStatus {
@@ -262,6 +285,16 @@
           이름
           <input type="text" name="name" required />
         </label>
+        <label>
+          날짜
+          <input type="date" name="date" id="orderDate" required />
+        </label>
+        <fieldset class="order-fieldset">
+          <legend>식사 시간</legend>
+          <label><input type="radio" name="meal_time" value="아침" /> 아침</label>
+          <label><input type="radio" name="meal_time" value="점심" checked /> 점심</label>
+          <label><input type="radio" name="meal_time" value="저녁" /> 저녁</label>
+        </fieldset>
         <label>
           수량(인분)
           <input type="number" name="count" id="orderCount" min="1" value="1" />
@@ -320,6 +353,15 @@
     const recommendButton = document.querySelector("#recommendButton");
     const menuResult = document.querySelector("#menuResult");
     const orderMenu = document.querySelector("#orderMenu");
+    const orderDate = document.querySelector("#orderDate");
+
+    function todayISODate() {
+      const now = new Date();
+      const localTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+      return localTime.toISOString().slice(0, 10);
+    }
+
+    orderDate.value = todayISODate();
 
     function recommendMenu() {
       const menu = MENUS[Math.floor(Math.random() * MENUS.length)];
@@ -374,6 +416,10 @@
 
         if (response.ok) {
           orderStatus.textContent = "제출이 완료되었습니다. 감사합니다!";
+          orderForm.reset();
+          orderDate.value = todayISODate();
+          menuResult.classList.add("empty-state");
+          menuResult.textContent = "추천받기 버튼을 눌러 메뉴를 확인하세요.";
         } else {
           orderStatus.textContent = "제출에 실패했습니다. 다시 시도해 주세요.";
         }
