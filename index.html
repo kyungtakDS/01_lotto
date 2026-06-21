@@ -202,6 +202,16 @@
       color: var(--title-color);
     }
 
+    .comments-section {
+      margin-top: 40px;
+    }
+
+    .comments-section h2 {
+      margin-bottom: 14px;
+      font-size: 1.3rem;
+      color: var(--title-color);
+    }
+
     #orderForm {
       display: grid;
       gap: 16px;
@@ -319,6 +329,11 @@
         </div>
         <p id="orderStatus" class="muted" role="status"></p>
       </form>
+    </section>
+
+    <section class="comments-section" aria-labelledby="comments-title">
+      <h2 id="comments-title">댓글</h2>
+      <div id="disqus_thread"></div>
     </section>
   </main>
 
@@ -497,6 +512,14 @@
         orderSubmit.disabled = false;
       }
     });
+
+    (function () {
+      const d = document, s = d.createElement("script");
+      s.src = "https://hydrods.disqus.com/embed.js";
+      s.setAttribute("data-timestamp", +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
   </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </body>
 </html>
