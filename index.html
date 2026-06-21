@@ -145,7 +145,7 @@
       gap: 10px;
       justify-items: center;
       text-align: center;
-      min-height: 220px;
+      min-height: 320px;
       align-content: center;
       border: 1px solid var(--card-border);
       border-radius: 12px;
@@ -155,9 +155,23 @@
       transition: background 0.2s ease, border-color 0.2s ease;
     }
 
+    .menu-photo {
+      display: grid;
+      justify-content: center;
+    }
+
     .menu-emoji {
       font-size: 5rem;
       line-height: 1;
+    }
+
+    .menu-photo-img {
+      width: 100%;
+      max-width: 320px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px var(--card-shadow);
     }
 
     .menu-name {
@@ -328,26 +342,56 @@
     });
 
     const MENUS = [
-      { name: "김치찌개", emoji: "🍲", desc: "든든하고 칼칼한 한식 한 끼" },
-      { name: "된장찌개", emoji: "🥘", desc: "구수하고 편안한 집밥 느낌" },
-      { name: "짜장면", emoji: "🍜", desc: "한 그릇으로 든든한 중식" },
-      { name: "짬뽕", emoji: "🦑", desc: "매콤하고 시원한 국물 한 그릇" },
-      { name: "떡볶이", emoji: "🌶️", desc: "매콤달콤한 분식의 대표주자" },
-      { name: "김밥", emoji: "🍙", desc: "가볍고 든든한 한 끼" },
-      { name: "초밥", emoji: "🍣", desc: "신선하고 깔끔한 한 입" },
-      { name: "라멘", emoji: "🍜", desc: "진한 국물의 일본식 라면" },
-      { name: "피자", emoji: "🍕", desc: "치즈 가득한 한 조각의 행복" },
-      { name: "햄버거", emoji: "🍔", desc: "빠르고 든든한 패스트푸드" },
-      { name: "치킨", emoji: "🍗", desc: "바삭바삭, 언제나 옳은 선택" },
-      { name: "삼겹살", emoji: "🥓", desc: "구워 먹는 즐거움, 회식 필수" },
-      { name: "비빔밥", emoji: "🍱", desc: "골고루 영양 가득한 한 그릇" },
-      { name: "우동", emoji: "🍲", desc: "따뜻한 국물이 생각날 때" },
-      { name: "파스타", emoji: "🍝", desc: "부드럽고 풍미 가득한 한 끼" },
-      { name: "샐러드", emoji: "🥗", desc: "가볍고 건강하게 즐기는 한 끼" },
-      { name: "칼국수", emoji: "🍜", desc: "쫄깃한 면발과 시원한 국물" },
-      { name: "갈비탕", emoji: "🍖", desc: "든든하고 깊은 맛의 보양식" },
-      { name: "마라탕", emoji: "🌶️", desc: "얼큰하고 중독적인 매운맛" },
-      { name: "돈까스", emoji: "🍱", desc: "바삭한 튀김옷의 행복" }
+      { name: "김치찌개", wiki: "Kimchi-jjigae", emoji: "🍲", desc: "든든하고 칼칼한 한식 한 끼" },
+      { name: "된장찌개", wiki: "Doenjang-jjigae", emoji: "🥘", desc: "구수하고 편안한 집밥 느낌" },
+      { name: "짜장면", wiki: "Jjajangmyeon", emoji: "🍜", desc: "한 그릇으로 든든한 중식" },
+      { name: "짬뽕", wiki: "Jjamppong", emoji: "🦑", desc: "매콤하고 시원한 국물 한 그릇" },
+      { name: "떡볶이", wiki: "Tteokbokki", emoji: "🌶️", desc: "매콤달콤한 분식의 대표주자" },
+      { name: "김밥", wiki: "Kimbap", emoji: "🍙", desc: "가볍고 든든한 한 끼" },
+      { name: "초밥", wiki: "Sushi", emoji: "🍣", desc: "신선하고 깔끔한 한 입" },
+      { name: "라멘", wiki: "Ramen", emoji: "🍜", desc: "진한 국물의 일본식 라면" },
+      { name: "피자", wiki: "Pizza", emoji: "🍕", desc: "치즈 가득한 한 조각의 행복" },
+      { name: "햄버거", wiki: "Hamburger", emoji: "🍔", desc: "빠르고 든든한 패스트푸드" },
+      { name: "양념치킨", wiki: "Korean_fried_chicken", emoji: "🍗", desc: "바삭바삭, 언제나 옳은 선택" },
+      { name: "삼겹살", wiki: "Samgyeopsal", emoji: "🥓", desc: "구워 먹는 즐거움, 회식 필수" },
+      { name: "비빔밥", wiki: "Bibimbap", emoji: "🍱", desc: "골고루 영양 가득한 한 그릇" },
+      { name: "우동", wiki: "Udon", emoji: "🍲", desc: "따뜻한 국물이 생각날 때" },
+      { name: "파스타", wiki: "Pasta", emoji: "🍝", desc: "부드럽고 풍미 가득한 한 끼" },
+      { name: "샐러드", wiki: "Salad", emoji: "🥗", desc: "가볍고 건강하게 즐기는 한 끼" },
+      { name: "칼국수", wiki: "Kalguksu", emoji: "🍜", desc: "쫄깃한 면발과 시원한 국물" },
+      { name: "갈비탕", wiki: "Galbitang", emoji: "🍖", desc: "든든하고 깊은 맛의 보양식" },
+      { name: "마라탕", wiki: "Malatang", emoji: "🌶️", desc: "얼큰하고 중독적인 매운맛" },
+      { name: "돈까스", wiki: "Tonkatsu", emoji: "🍱", desc: "바삭한 튀김옷의 행복" },
+      { name: "불고기", wiki: "Bulgogi", emoji: "🥩", desc: "달콤짭짤한 한국식 구이" },
+      { name: "잡채", wiki: "Japchae", emoji: "🍝", desc: "쫄깃한 당면과 채소의 조화" },
+      { name: "순두부찌개", wiki: "Sundubu-jjigae", emoji: "🍲", desc: "부드럽고 얼큰한 순두부 한 그릇" },
+      { name: "냉면", wiki: "Naengmyeon", emoji: "🍜", desc: "시원하게 즐기는 여름 별미" },
+      { name: "보쌈", wiki: "Bossam", emoji: "🥩", desc: "촉촉한 수육과 아삭한 김치" },
+      { name: "족발", wiki: "Jokbal", emoji: "🍖", desc: "쫄깃한 콜라겐 가득 별미" },
+      { name: "부대찌개", wiki: "Budae-jjigae", emoji: "🍲", desc: "얼큰하고 든든한 한 끼" },
+      { name: "해물파전", wiki: "Haemul_pajeon", emoji: "🥞", desc: "바삭하고 고소한 전 한 장" },
+      { name: "떡국", wiki: "Tteokguk", emoji: "🍲", desc: "깔끔한 국물의 떡국 한 그릇" },
+      { name: "갈비찜", wiki: "Galbijjim", emoji: "🍖", desc: "달콤하게 졸인 갈비찜" },
+      { name: "닭갈비", wiki: "Dak-galbi", emoji: "🍗", desc: "매콤하게 볶아낸 닭갈비" },
+      { name: "찜닭", wiki: "Jjimdak", emoji: "🍗", desc: "달콤짭짤한 찜닭 한 그릇" },
+      { name: "콩나물국밥", wiki: "Gukbap", emoji: "🍚", desc: "해장에 좋은 시원한 국밥" },
+      { name: "순대", wiki: "Sundae_(Korean_food)", emoji: "🌭", desc: "쫄깃한 분식의 단골 메뉴" },
+      { name: "곰탕", wiki: "Gomtang", emoji: "🍲", desc: "깊고 진한 사골 국물" },
+      { name: "추어탕", wiki: "Chueotang", emoji: "🐟", desc: "보양식으로 유명한 추어탕" },
+      { name: "닭볶음탕", wiki: "Dakbokkeumtang", emoji: "🍗", desc: "매콤하게 졸인 닭찜 요리" },
+      { name: "감자탕", wiki: "Gamjatang", emoji: "🍖", desc: "얼큰하고 든든한 감자탕" },
+      { name: "부침개", wiki: "Buchimgae", emoji: "🥞", desc: "비 오는 날 생각나는 전" },
+      { name: "떡갈비", wiki: "Tteok-galbi", emoji: "🍖", desc: "부드럽고 달콤한 떡갈비" },
+      { name: "쌀국수", wiki: "Pho", emoji: "🍜", desc: "깔끔한 베트남식 쌀국수" },
+      { name: "팟타이", wiki: "Pad_thai", emoji: "🍜", desc: "새콤달콤한 태국식 볶음면" },
+      { name: "카레", wiki: "Curry", emoji: "🍛", desc: "향긋하고 든든한 카레 한 그릇" },
+      { name: "스테이크", wiki: "Steak", emoji: "🥩", desc: "육즙 가득한 특별한 한 끼" },
+      { name: "그라탕", wiki: "Gratin", emoji: "🧀", desc: "치즈 듬뿍 오븐 요리" },
+      { name: "리조또", wiki: "Risotto", emoji: "🍚", desc: "크리미하고 부드러운 이탈리안 라이스" },
+      { name: "타코", wiki: "Taco", emoji: "🌮", desc: "한 입에 즐기는 멕시칸 요리" },
+      { name: "케밥", wiki: "Kebab", emoji: "🥙", desc: "고기와 채소가 가득한 한 끼" },
+      { name: "핫도그", wiki: "Hot_dog", emoji: "🌭", desc: "간단하고 든든한 길거리 음식" },
+      { name: "도넛", wiki: "Doughnut", emoji: "🍩", desc: "달콤한 디저트 한 입" }
     ];
 
     const recommendButton = document.querySelector("#recommendButton");
@@ -363,15 +407,20 @@
 
     orderDate.value = todayISODate();
 
-    function recommendMenu() {
+    async function recommendMenu() {
+      recommendButton.disabled = true;
+
       const menu = MENUS[Math.floor(Math.random() * MENUS.length)];
 
       menuResult.classList.remove("empty-state");
       menuResult.replaceChildren();
 
+      const photo = document.createElement("div");
+      photo.className = "menu-photo";
       const emoji = document.createElement("div");
       emoji.className = "menu-emoji";
       emoji.textContent = menu.emoji;
+      photo.appendChild(emoji);
 
       const name = document.createElement("div");
       name.className = "menu-name";
@@ -381,11 +430,30 @@
       desc.className = "menu-desc";
       desc.textContent = menu.desc;
 
-      menuResult.appendChild(emoji);
+      menuResult.appendChild(photo);
       menuResult.appendChild(name);
       menuResult.appendChild(desc);
 
       orderMenu.value = menu.name;
+
+      try {
+        const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${menu.wiki}`);
+        if (response.ok) {
+          const data = await response.json();
+          const imageUrl = data.thumbnail && data.thumbnail.source;
+          if (imageUrl) {
+            const img = document.createElement("img");
+            img.src = imageUrl;
+            img.alt = menu.name;
+            img.className = "menu-photo-img";
+            photo.replaceChildren(img);
+          }
+        }
+      } catch (error) {
+        // 네트워크 오류 시 이모지 표시를 그대로 유지
+      } finally {
+        recommendButton.disabled = false;
+      }
     }
 
     recommendButton.addEventListener("click", recommendMenu);
