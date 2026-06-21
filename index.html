@@ -28,6 +28,8 @@
       --empty-border: #aeb8c8;
       --empty-bg: rgba(255, 255, 255, 0.58);
       --empty-text: #68758a;
+      --dialog-bg: #ffffff;
+      --input-bg: rgba(0, 0, 0, 0.02);
     }
 
     html[data-theme="dark"] {
@@ -47,6 +49,8 @@
       --empty-border: rgba(255, 255, 255, 0.25);
       --empty-bg: rgba(255, 255, 255, 0.04);
       --empty-text: #9aa4b8;
+      --dialog-bg: #1c2230;
+      --input-bg: rgba(255, 255, 255, 0.06);
     }
 
     body {
@@ -243,6 +247,77 @@
         height: 40px;
       }
     }
+
+    .attendance-dialog {
+      border: none;
+      border-radius: 12px;
+      padding: 26px;
+      width: min(420px, calc(100% - 40px));
+      color: var(--text-color);
+      background: var(--dialog-bg);
+      box-shadow: 0 20px 50px var(--card-shadow);
+    }
+
+    .attendance-dialog::backdrop {
+      background: rgba(8, 12, 20, 0.55);
+    }
+
+    .attendance-dialog form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .attendance-dialog h2 {
+      font-size: 1.3rem;
+    }
+
+    .attendance-dialog label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.95rem;
+    }
+
+    .attendance-dialog input[type="text"],
+    .attendance-dialog input[type="number"] {
+      min-height: 42px;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 0 12px;
+      background: var(--input-bg);
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+
+    .attendance-fieldset {
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      gap: 18px;
+    }
+
+    .attendance-fieldset legend {
+      font-size: 0.85rem;
+      color: var(--muted-color);
+      padding: 0 4px;
+    }
+
+    .attendance-fieldset label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.95rem;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    #attendanceStatus {
+      min-height: 1.2em;
+    }
   </style>
 </head>
 <body>
@@ -260,6 +335,7 @@
       <div class="control-bar">
         <button type="button" id="drawButton">2게임 추천받기</button>
         <button type="button" id="themeToggle" class="theme-toggle">🌙 다크모드</button>
+        <button type="button" id="openAttendance" class="theme-toggle">📋 회의 참석 여부 작성</button>
         <span class="muted" id="drawTime">아직 추첨 전입니다.</span>
       </div>
 
@@ -268,6 +344,34 @@
       </ul>
     </section>
   </main>
+
+  <dialog id="attendanceDialog" class="attendance-dialog">
+    <form id="attendanceForm">
+      <h2>회의 참석 여부</h2>
+      <label>
+        이름
+        <input type="text" name="name" required />
+      </label>
+
+      <fieldset class="attendance-fieldset">
+        <legend>참석 여부</legend>
+        <label><input type="radio" name="attendance" value="참석" checked /> 참석</label>
+        <label><input type="radio" name="attendance" value="불참" /> 불참</label>
+      </fieldset>
+
+      <label>
+        참석 인원수
+        <input type="number" name="count" id="attendanceCount" min="1" value="1" />
+      </label>
+
+      <div class="dialog-actions">
+        <button type="button" id="attendanceCancel" class="theme-toggle">취소</button>
+        <button type="submit" id="attendanceSubmit">제출</button>
+      </div>
+
+      <p id="attendanceStatus" class="muted" role="status"></p>
+    </form>
+  </dialog>
 
   <script>
     const drawButton = document.querySelector("#drawButton");
@@ -367,6 +471,57 @@
     }
 
     drawButton.addEventListener("click", renderGames);
+
+    const FORMSPREE_ENDPOINT = "https://formspree.io/f/xojoadjg";
+    const attendanceDialog = document.querySelector("#attendanceDialog");
+    const attendanceForm = document.querySelector("#attendanceForm");
+    const attendanceStatus = document.querySelector("#attendanceStatus");
+    const attendanceSubmit = document.querySelector("#attendanceSubmit");
+    const attendanceCount = document.querySelector("#attendanceCount");
+    const openAttendance = document.querySelector("#openAttendance");
+    const attendanceCancel = document.querySelector("#attendanceCancel");
+
+    openAttendance.addEventListener("click", () => {
+      attendanceForm.reset();
+      attendanceCount.disabled = false;
+      attendanceStatus.textContent = "";
+      attendanceDialog.showModal();
+    });
+
+    attendanceCancel.addEventListener("click", () => attendanceDialog.close());
+
+    attendanceForm.addEventListener("change", (event) => {
+      if (event.target.name === "attendance") {
+        const isAttending = event.target.value === "참석";
+        attendanceCount.disabled = !isAttending;
+        attendanceCount.value = isAttending ? "1" : "0";
+      }
+    });
+
+    attendanceForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      attendanceSubmit.disabled = true;
+      attendanceStatus.textContent = "전송 중...";
+
+      try {
+        const response = await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new FormData(attendanceForm)
+        });
+
+        if (response.ok) {
+          attendanceStatus.textContent = "제출이 완료되었습니다. 감사합니다!";
+          setTimeout(() => attendanceDialog.close(), 1200);
+        } else {
+          attendanceStatus.textContent = "제출에 실패했습니다. 다시 시도해 주세요.";
+        }
+      } catch (error) {
+        attendanceStatus.textContent = "네트워크 오류로 제출에 실패했습니다.";
+      } finally {
+        attendanceSubmit.disabled = false;
+      }
+    });
   </script>
 </body>
 </html>
