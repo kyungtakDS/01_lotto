@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>로또번호 추첨기</title>
+  <title>오늘 뭐 먹지? 메뉴 추천기</title>
   <style>
     * {
       box-sizing: border-box;
@@ -15,20 +15,19 @@
       --text-color: #172033;
       --sub-text-color: #59677c;
       --muted-color: #6b7280;
-      --bg-glow: rgba(255, 215, 87, 0.38);
+      --bg-glow: rgba(255, 159, 67, 0.32);
       --bg-grad-start: #f7f9fc;
       --bg-grad-end: #eaf0f8;
-      --button-bg: #ffd447;
-      --button-bg-hover: #ffc928;
-      --button-text: #111827;
+      --button-bg: #ff9f43;
+      --button-bg-hover: #ff8c1a;
+      --button-text: #1f2937;
       --card-bg: rgba(255, 255, 255, 0.86);
       --card-border: rgba(120, 135, 160, 0.22);
       --card-shadow: rgba(28, 42, 70, 0.08);
-      --game-title-color: #2f3c52;
+      --title-color: #2f3c52;
       --empty-border: #aeb8c8;
       --empty-bg: rgba(255, 255, 255, 0.58);
       --empty-text: #68758a;
-      --dialog-bg: #ffffff;
       --input-bg: rgba(0, 0, 0, 0.02);
     }
 
@@ -36,20 +35,19 @@
       --text-color: #e8edf7;
       --sub-text-color: #aab4c6;
       --muted-color: #9aa4b8;
-      --bg-glow: rgba(255, 215, 87, 0.14);
+      --bg-glow: rgba(255, 159, 67, 0.16);
       --bg-grad-start: #161b27;
       --bg-grad-end: #0c1018;
-      --button-bg: #ffd447;
-      --button-bg-hover: #ffc928;
-      --button-text: #111827;
+      --button-bg: #ff9f43;
+      --button-bg-hover: #ff8c1a;
+      --button-text: #1f2937;
       --card-bg: rgba(255, 255, 255, 0.06);
       --card-border: rgba(255, 255, 255, 0.12);
       --card-shadow: rgba(0, 0, 0, 0.35);
-      --game-title-color: #e8edf7;
+      --title-color: #e8edf7;
       --empty-border: rgba(255, 255, 255, 0.25);
       --empty-bg: rgba(255, 255, 255, 0.04);
       --empty-text: #9aa4b8;
-      --dialog-bg: #1c2230;
       --input-bg: rgba(255, 255, 255, 0.06);
     }
 
@@ -64,7 +62,7 @@
     }
 
     main {
-      width: min(960px, calc(100% - 32px));
+      width: min(720px, calc(100% - 32px));
       margin: 0 auto;
       padding: 56px 0;
     }
@@ -76,9 +74,8 @@
     }
 
     h1 {
-      font-size: clamp(2.25rem, 7vw, 4.8rem);
-      line-height: 1.05;
-      letter-spacing: 0;
+      font-size: clamp(2rem, 7vw, 3.4rem);
+      line-height: 1.1;
     }
 
     .sub-text {
@@ -93,7 +90,7 @@
       flex-wrap: wrap;
       gap: 12px;
       align-items: center;
-      margin: 30px 0 22px;
+      margin: 0 0 22px;
     }
 
     button {
@@ -106,18 +103,24 @@
       color: var(--button-text);
       background: var(--button-bg);
       cursor: pointer;
-      box-shadow: 0 8px 18px rgba(182, 129, 0, 0.18);
+      box-shadow: 0 8px 18px rgba(182, 95, 0, 0.18);
       transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
     }
 
     button:hover {
       background: var(--button-bg-hover);
       transform: translateY(-1px);
-      box-shadow: 0 12px 24px rgba(182, 129, 0, 0.22);
+      box-shadow: 0 12px 24px rgba(182, 95, 0, 0.22);
     }
 
     button:active {
       transform: translateY(0);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .theme-toggle {
@@ -137,149 +140,73 @@
       font-size: 0.95rem;
     }
 
-    .result-list {
+    .menu-card {
       display: grid;
-      gap: 14px;
-      list-style: none;
-    }
-
-    .game-card {
-      display: grid;
-      grid-template-columns: 88px 1fr;
-      gap: 18px;
-      align-items: center;
-      min-height: 98px;
+      gap: 10px;
+      justify-items: center;
+      text-align: center;
+      min-height: 220px;
+      align-content: center;
       border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 18px;
+      border-radius: 12px;
+      padding: 32px 18px;
       background: var(--card-bg);
       box-shadow: 0 10px 28px var(--card-shadow);
       transition: background 0.2s ease, border-color 0.2s ease;
     }
 
-    .game-title {
-      color: var(--game-title-color);
+    .menu-emoji {
+      font-size: 5rem;
+      line-height: 1;
+    }
+
+    .menu-name {
+      font-size: 1.6rem;
       font-weight: 800;
+      color: var(--title-color);
     }
 
-    .numbers {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .ball {
-      display: inline-grid;
-      place-items: center;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      color: #111827;
-      font-weight: 800;
-      box-shadow: inset 0 -4px 10px rgba(0, 0, 0, 0.12), 0 5px 12px rgba(31, 41, 55, 0.14);
-    }
-
-    .ball-yellow {
-      background: #f7c948;
-    }
-
-    .ball-blue {
-      color: white;
-      background: #3b82f6;
-    }
-
-    .ball-red {
-      color: white;
-      background: #ef4444;
-    }
-
-    .ball-gray {
-      color: white;
-      background: #64748b;
-    }
-
-    .ball-green {
-      color: white;
-      background: #22a06b;
-    }
-
-    .plus {
-      color: #9aa4b2;
-      font-weight: 800;
-    }
-
-    .bonus {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-left: 2px;
-    }
-
-    .bonus-label {
-      color: var(--muted-color);
-      font-size: 0.85rem;
-      font-weight: 700;
+    .menu-desc {
+      color: var(--sub-text-color);
+      font-size: 1rem;
     }
 
     .empty-state {
       border: 1px dashed var(--empty-border);
-      border-radius: 8px;
-      padding: 36px 20px;
+      border-radius: 12px;
       color: var(--empty-text);
       background: var(--empty-bg);
-      text-align: center;
     }
 
-    @media (max-width: 640px) {
-      main {
-        width: min(100% - 24px, 960px);
-        padding: 34px 0;
-      }
-
-      .game-card {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      .ball {
-        width: 40px;
-        height: 40px;
-      }
+    .order-section {
+      margin-top: 40px;
     }
 
-    .attendance-dialog {
-      border: none;
-      border-radius: 12px;
-      padding: 26px;
-      width: min(420px, calc(100% - 40px));
-      color: var(--text-color);
-      background: var(--dialog-bg);
-      box-shadow: 0 20px 50px var(--card-shadow);
+    .order-section h2 {
+      margin-bottom: 14px;
+      font-size: 1.3rem;
+      color: var(--title-color);
     }
 
-    .attendance-dialog::backdrop {
-      background: rgba(8, 12, 20, 0.55);
-    }
-
-    .attendance-dialog form {
+    #orderForm {
       display: grid;
       gap: 16px;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      background: var(--card-bg);
+      box-shadow: 0 10px 28px var(--card-shadow);
     }
 
-    .attendance-dialog h2 {
-      font-size: 1.3rem;
-    }
-
-    .attendance-dialog label {
+    #orderForm label {
       display: grid;
       gap: 6px;
       font-size: 0.95rem;
     }
 
-    .attendance-dialog input[type="text"],
-    .attendance-dialog input[type="number"] {
-      min-height: 42px;
+    #orderForm input[type="text"],
+    #orderForm input[type="number"] {
+      min-height: 44px;
       border: 1px solid var(--card-border);
       border-radius: 6px;
       padding: 0 12px;
@@ -288,107 +215,77 @@
       font-size: 1rem;
     }
 
-    .attendance-fieldset {
-      border: 1px solid var(--card-border);
-      border-radius: 6px;
-      padding: 12px;
-      display: flex;
-      gap: 18px;
-    }
-
-    .attendance-fieldset legend {
-      font-size: 0.85rem;
+    #orderForm input[readonly] {
       color: var(--muted-color);
-      padding: 0 4px;
     }
 
-    .attendance-fieldset label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.95rem;
-    }
-
-    .dialog-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-
-    #attendanceStatus {
+    #orderStatus {
       min-height: 1.2em;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        width: min(100% - 24px, 720px);
+        padding: 34px 0;
+      }
     }
   </style>
 </head>
 <body>
   <main>
     <header class="app-header">
-      <h1>로또번호 추첨기</h1>
+      <h1>오늘 뭐 먹지?</h1>
       <p class="sub-text">
-        버튼을 누르면 1부터 45까지의 숫자 중 중복 없이 6개 번호를 뽑습니다.
-        한 번에 2게임을 추천하고, 각 게임마다 보너스 번호도 함께 표시합니다.
+        버튼을 누르면 메뉴 목록 중 하나를 무작위로 추천해 드려요.
+        마음에 드는 메뉴가 나오면 아래 폼에 이름과 수량을 적어 신청해보세요.
       </p>
     </header>
 
-    <section aria-labelledby="draw-title">
-      <h2 id="draw-title" class="muted">추천 번호</h2>
+    <section aria-labelledby="recommend-title">
+      <h2 id="recommend-title" class="muted" style="margin-bottom: 14px;">메뉴 추천</h2>
       <div class="control-bar">
-        <button type="button" id="drawButton">2게임 추천받기</button>
+        <button type="button" id="recommendButton">메뉴 추천받기</button>
         <button type="button" id="themeToggle" class="theme-toggle">🌙 다크모드</button>
-        <button type="button" id="openAttendance" class="theme-toggle">📋 회의 참석 여부 작성</button>
-        <span class="muted" id="drawTime">아직 추첨 전입니다.</span>
       </div>
 
-      <ul class="result-list" id="resultList">
-        <li class="empty-state">추천받기 버튼을 눌러 번호를 생성하세요.</li>
-      </ul>
+      <div class="menu-card empty-state" id="menuResult">추천받기 버튼을 눌러 메뉴를 확인하세요.</div>
+    </section>
+
+    <section class="order-section" aria-labelledby="order-title">
+      <h2 id="order-title">메뉴 신청하기</h2>
+      <form id="orderForm">
+        <label>
+          추천 메뉴
+          <input type="text" name="menu" id="orderMenu" readonly placeholder="먼저 메뉴를 추천받아 주세요" />
+        </label>
+        <label>
+          이름
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          수량(인분)
+          <input type="number" name="count" id="orderCount" min="1" value="1" />
+        </label>
+        <input type="hidden" name="submitted_at" id="orderSubmittedAt" />
+        <div class="control-bar" style="margin: 0;">
+          <button type="submit" id="orderSubmit">제출</button>
+        </div>
+        <p id="orderStatus" class="muted" role="status"></p>
+      </form>
     </section>
   </main>
 
-  <dialog id="attendanceDialog" class="attendance-dialog">
-    <form id="attendanceForm">
-      <h2>회의 참석 여부</h2>
-      <label>
-        이름
-        <input type="text" name="name" required />
-      </label>
-
-      <fieldset class="attendance-fieldset">
-        <legend>참석 여부</legend>
-        <label><input type="radio" name="attendance" value="참석" checked /> 참석</label>
-        <label><input type="radio" name="attendance" value="불참" /> 불참</label>
-      </fieldset>
-
-      <label>
-        참석 인원수
-        <input type="number" name="count" id="attendanceCount" min="1" value="1" />
-      </label>
-
-      <input type="hidden" name="submitted_at" id="attendanceSubmittedAt" />
-
-      <div class="dialog-actions">
-        <button type="button" id="attendanceCancel" class="theme-toggle">취소</button>
-        <button type="submit" id="attendanceSubmit">제출</button>
-      </div>
-
-      <p id="attendanceStatus" class="muted" role="status"></p>
-    </form>
-  </dialog>
-
   <script>
-    const drawButton = document.querySelector("#drawButton");
-    const drawTime = document.querySelector("#drawTime");
-    const resultList = document.querySelector("#resultList");
     const themeToggle = document.querySelector("#themeToggle");
 
     function applyTheme(theme) {
       document.documentElement.setAttribute("data-theme", theme);
       themeToggle.textContent = theme === "dark" ? "☀️ 라이트모드" : "🌙 다크모드";
-      localStorage.setItem("lotto-theme", theme);
+      localStorage.setItem("menu-theme", theme);
     }
 
     const savedTheme =
-      localStorage.getItem("lotto-theme") ||
+      localStorage.getItem("menu-theme") ||
       (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     applyTheme(savedTheme);
 
@@ -397,132 +294,93 @@
       applyTheme(nextTheme);
     });
 
-    function getBallClass(number) {
-      if (number <= 10) return "ball-yellow";
-      if (number <= 20) return "ball-blue";
-      if (number <= 30) return "ball-red";
-      if (number <= 40) return "ball-gray";
-      return "ball-green";
+    const MENUS = [
+      { name: "김치찌개", emoji: "🍲", desc: "든든하고 칼칼한 한식 한 끼" },
+      { name: "된장찌개", emoji: "🥘", desc: "구수하고 편안한 집밥 느낌" },
+      { name: "짜장면", emoji: "🍜", desc: "한 그릇으로 든든한 중식" },
+      { name: "짬뽕", emoji: "🦑", desc: "매콤하고 시원한 국물 한 그릇" },
+      { name: "떡볶이", emoji: "🌶️", desc: "매콤달콤한 분식의 대표주자" },
+      { name: "김밥", emoji: "🍙", desc: "가볍고 든든한 한 끼" },
+      { name: "초밥", emoji: "🍣", desc: "신선하고 깔끔한 한 입" },
+      { name: "라멘", emoji: "🍜", desc: "진한 국물의 일본식 라면" },
+      { name: "피자", emoji: "🍕", desc: "치즈 가득한 한 조각의 행복" },
+      { name: "햄버거", emoji: "🍔", desc: "빠르고 든든한 패스트푸드" },
+      { name: "치킨", emoji: "🍗", desc: "바삭바삭, 언제나 옳은 선택" },
+      { name: "삼겹살", emoji: "🥓", desc: "구워 먹는 즐거움, 회식 필수" },
+      { name: "비빔밥", emoji: "🍱", desc: "골고루 영양 가득한 한 그릇" },
+      { name: "우동", emoji: "🍲", desc: "따뜻한 국물이 생각날 때" },
+      { name: "파스타", emoji: "🍝", desc: "부드럽고 풍미 가득한 한 끼" },
+      { name: "샐러드", emoji: "🥗", desc: "가볍고 건강하게 즐기는 한 끼" },
+      { name: "칼국수", emoji: "🍜", desc: "쫄깃한 면발과 시원한 국물" },
+      { name: "갈비탕", emoji: "🍖", desc: "든든하고 깊은 맛의 보양식" },
+      { name: "마라탕", emoji: "🌶️", desc: "얼큰하고 중독적인 매운맛" },
+      { name: "돈까스", emoji: "🍱", desc: "바삭한 튀김옷의 행복" }
+    ];
+
+    const recommendButton = document.querySelector("#recommendButton");
+    const menuResult = document.querySelector("#menuResult");
+    const orderMenu = document.querySelector("#orderMenu");
+
+    function recommendMenu() {
+      const menu = MENUS[Math.floor(Math.random() * MENUS.length)];
+
+      menuResult.classList.remove("empty-state");
+      menuResult.replaceChildren();
+
+      const emoji = document.createElement("div");
+      emoji.className = "menu-emoji";
+      emoji.textContent = menu.emoji;
+
+      const name = document.createElement("div");
+      name.className = "menu-name";
+      name.textContent = menu.name;
+
+      const desc = document.createElement("div");
+      desc.className = "menu-desc";
+      desc.textContent = menu.desc;
+
+      menuResult.appendChild(emoji);
+      menuResult.appendChild(name);
+      menuResult.appendChild(desc);
+
+      orderMenu.value = menu.name;
     }
 
-    function drawOneGame() {
-      const pool = Array.from({ length: 45 }, (_, index) => index + 1);
-      const picked = [];
+    recommendButton.addEventListener("click", recommendMenu);
 
-      while (picked.length < 7) {
-        const randomIndex = Math.floor(Math.random() * pool.length);
-        const [number] = pool.splice(randomIndex, 1);
-        picked.push(number);
-      }
+    const FORMSPREE_ENDPOINT = "https://formspree.io/f/mpqgaddv";
+    const orderForm = document.querySelector("#orderForm");
+    const orderStatus = document.querySelector("#orderStatus");
+    const orderSubmit = document.querySelector("#orderSubmit");
 
-      return {
-        main: picked.slice(0, 6).sort((a, b) => a - b),
-        bonus: picked[6]
-      };
-    }
-
-    function createBall(number) {
-      const ball = document.createElement("span");
-      ball.className = `ball ${getBallClass(number)}`;
-      ball.textContent = number;
-      return ball;
-    }
-
-    function renderGames() {
-      const games = Array.from({ length: 2 }, drawOneGame);
-      const fragment = document.createDocumentFragment();
-
-      games.forEach((game, index) => {
-        const item = document.createElement("li");
-        item.className = "game-card";
-
-        const title = document.createElement("strong");
-        title.className = "game-title";
-        title.textContent = `${index + 1}게임`;
-
-        const numbers = document.createElement("div");
-        numbers.className = "numbers";
-
-        game.main.forEach((number) => {
-          numbers.appendChild(createBall(number));
-        });
-
-        const plus = document.createElement("span");
-        plus.className = "plus";
-        plus.textContent = "+";
-        numbers.appendChild(plus);
-
-        const bonus = document.createElement("span");
-        bonus.className = "bonus";
-
-        const bonusLabel = document.createElement("span");
-        bonusLabel.className = "bonus-label";
-        bonusLabel.textContent = "보너스";
-
-        bonus.appendChild(bonusLabel);
-        bonus.appendChild(createBall(game.bonus));
-        numbers.appendChild(bonus);
-
-        item.appendChild(title);
-        item.appendChild(numbers);
-        fragment.appendChild(item);
-      });
-
-      resultList.replaceChildren(fragment);
-      drawTime.textContent = `추첨 시각: ${new Date().toLocaleString("ko-KR")}`;
-    }
-
-    drawButton.addEventListener("click", renderGames);
-
-    const FORMSPREE_ENDPOINT = "https://formspree.io/f/xojoadjg";
-    const attendanceDialog = document.querySelector("#attendanceDialog");
-    const attendanceForm = document.querySelector("#attendanceForm");
-    const attendanceStatus = document.querySelector("#attendanceStatus");
-    const attendanceSubmit = document.querySelector("#attendanceSubmit");
-    const attendanceCount = document.querySelector("#attendanceCount");
-    const openAttendance = document.querySelector("#openAttendance");
-    const attendanceCancel = document.querySelector("#attendanceCancel");
-
-    openAttendance.addEventListener("click", () => {
-      attendanceForm.reset();
-      attendanceCount.disabled = false;
-      attendanceStatus.textContent = "";
-      attendanceDialog.showModal();
-    });
-
-    attendanceCancel.addEventListener("click", () => attendanceDialog.close());
-
-    attendanceForm.addEventListener("change", (event) => {
-      if (event.target.name === "attendance") {
-        const isAttending = event.target.value === "참석";
-        attendanceCount.disabled = !isAttending;
-        attendanceCount.value = isAttending ? "1" : "0";
-      }
-    });
-
-    attendanceForm.addEventListener("submit", async (event) => {
+    orderForm.addEventListener("submit", async (event) => {
       event.preventDefault();
-      attendanceSubmit.disabled = true;
-      attendanceStatus.textContent = "전송 중...";
-      document.querySelector("#attendanceSubmittedAt").value = new Date().toLocaleString("ko-KR");
+
+      if (!orderMenu.value) {
+        orderStatus.textContent = "먼저 메뉴를 추천받아 주세요.";
+        return;
+      }
+
+      orderSubmit.disabled = true;
+      orderStatus.textContent = "전송 중...";
+      document.querySelector("#orderSubmittedAt").value = new Date().toLocaleString("ko-KR");
 
       try {
         const response = await fetch(FORMSPREE_ENDPOINT, {
           method: "POST",
           headers: { Accept: "application/json" },
-          body: new FormData(attendanceForm)
+          body: new FormData(orderForm)
         });
 
         if (response.ok) {
-          attendanceStatus.textContent = "제출이 완료되었습니다. 감사합니다!";
-          setTimeout(() => attendanceDialog.close(), 1200);
+          orderStatus.textContent = "제출이 완료되었습니다. 감사합니다!";
         } else {
-          attendanceStatus.textContent = "제출에 실패했습니다. 다시 시도해 주세요.";
+          orderStatus.textContent = "제출에 실패했습니다. 다시 시도해 주세요.";
         }
       } catch (error) {
-        attendanceStatus.textContent = "네트워크 오류로 제출에 실패했습니다.";
+        orderStatus.textContent = "네트워크 오류로 제출에 실패했습니다.";
       } finally {
-        attendanceSubmit.disabled = false;
+        orderSubmit.disabled = false;
       }
     });
   </script>
