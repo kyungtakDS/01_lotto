@@ -364,6 +364,8 @@
         <input type="number" name="count" id="attendanceCount" min="1" value="1" />
       </label>
 
+      <input type="hidden" name="submitted_at" id="attendanceSubmittedAt" />
+
       <div class="dialog-actions">
         <button type="button" id="attendanceCancel" class="theme-toggle">취소</button>
         <button type="submit" id="attendanceSubmit">제출</button>
@@ -502,6 +504,7 @@
       event.preventDefault();
       attendanceSubmit.disabled = true;
       attendanceStatus.textContent = "전송 중...";
+      document.querySelector("#attendanceSubmittedAt").value = new Date().toLocaleString("ko-KR");
 
       try {
         const response = await fetch(FORMSPREE_ENDPOINT, {
