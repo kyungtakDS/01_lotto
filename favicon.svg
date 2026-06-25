@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="강아지상 고양이상 테스트">
+  <defs>
+    <linearGradient id="bg" x1="6" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff9f43"/>
+      <stop offset="1" stop-color="#7c83fd"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background tile -->
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+
+  <!-- unified white pet silhouette: cat pointy ear (right) + dog floppy ear (left) + head -->
+  <g fill="#ffffff">
+    <!-- cat pointy ear (right) -->
+    <path d="M33 34 L45 14 L50 35 Z"/>
+    <!-- dog floppy ear (left) -->
+    <path d="M33 33 C24 24 13 25 12 35 C11.3 43 16 48 23 46 C24 40 26 37 33 33 Z"/>
+    <!-- head -->
+    <circle cx="32" cy="42" r="13.5"/>
+  </g>
+
+  <!-- inner ear accents in brand colors -->
+  <path d="M37 33 L44 20 L46 34 Z" fill="#7c83fd"/>
+  <path d="M30 35 C24 30 17 31 16 38 C15.6 43 19 46 23 44 C24 40 25 37 30 35 Z" fill="#ff9f43"/>
+
+  <!-- face -->
+  <g fill="#2f3c52">
+    <circle cx="27" cy="42.5" r="2.8"/>
+    <circle cx="37" cy="42.5" r="2.8"/>
+    <path d="M32 46.5 C34.1 46.5 35.2 48.2 34.1 49.6 C33.3 50.9 30.7 50.9 29.9 49.6 C28.8 48.2 29.9 46.5 32 46.5 Z"/>
+  </g>
+  <g fill="none" stroke="#2f3c52" stroke-width="1.5" stroke-linecap="round">
+    <path d="M32 50.4 C32 52.6 30.4 53.2 28.8 52.6"/>
+    <path d="M32 50.4 C32 52.6 33.6 53.2 35.2 52.6"/>
+  </g>
+  <!-- eye highlights -->
+  <g fill="#ffffff">
+    <circle cx="27.9" cy="41.6" r="0.85"/>
+    <circle cx="37.9" cy="41.6" r="0.85"/>
+  </g>
+</svg>
