@@ -28,6 +28,14 @@
 - 결과가 정확한가요? — AI 모델의 추정치로, 각도·조명·표정에 따라 달라질 수 있는 재미용 콘텐츠입니다.
 - 어떻게 하나요? — 사진을 올리거나 끌어다 놓으면 AI가 브라우저에서 바로 분석합니다.
 
+## 핵심 용어 (Key terms)
+
+- 동물상(animal-face type): 사람의 얼굴 인상을 동물에 비유하는 한국식 표현
+- 강아지상(puppy-like face / dog-like face): 둥근 얼굴형과 동그란 눈의 친근한 인상
+- 고양이상(cat-like face): 갸름한 윤곽과 올라간 눈매의 시크한 인상
+- AI 얼굴 분석(AI face analysis): Teachable Machine + TensorFlow.js 기반 브라우저 내 이미지 분류
+- 무료 동물상 테스트(free animal-face test): 회원가입·설치 없이 사진 한 장으로 분석
+
 ## 주요 페이지
 
 - [동물상 테스트(홈)](https://01-lotto-4o3.pages.dev/): 사진을 올려 강아지상·고양이상 비율을 분석하는 메인 페이지.

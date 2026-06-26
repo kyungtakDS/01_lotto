@@ -1,4 +1,26 @@
 User-agent: *
 Allow: /
 
+# AI 검색/인용 크롤러 명시 허용 (GEO)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
 Sitemap: https://01-lotto-4o3.pages.dev/sitemap.xml
