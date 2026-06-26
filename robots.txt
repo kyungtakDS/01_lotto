@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://01-lotto-4o3.pages.dev/sitemap.xml
